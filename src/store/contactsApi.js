@@ -19,7 +19,7 @@ export const contactsApi = createApi({
     createContacts: builder.mutation({
       query: newContacts=>({
         url : `/contacts`,
-        method: 'DELETE',
+        method: 'POST',
         body: newContacts,
       }),
        invalidatesTags: ['Contacts'],

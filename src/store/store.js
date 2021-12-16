@@ -11,9 +11,7 @@ export const store = configureStore({
     filterContact: filterContactReducer,
   },
   middleware: (getDefaultMiddleware) =>
-//    [
-//  ...getDefaultMiddleware().contactsApi.middleware,
-//    ] ,
+
 getDefaultMiddleware().concat(contactsApi.middleware)
 });
 setupListeners(store.dispach);

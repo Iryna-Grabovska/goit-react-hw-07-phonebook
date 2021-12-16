@@ -10,22 +10,21 @@ import shortid from 'shortid';
 
 export default function Form() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const nameInputId = shortid.generate();
-  const numberInputId = shortid.generate();
+  const phoneInputId = shortid.generate();
   const contacts = useSelector(({ contacts }) => contacts);
   const dispatch = useDispatch();
   const [createContacts]= useCreateContactsMutation();
-
   const handleChange = e => {
     const { name, value } = e.currentTarget;
     switch (name) {
       case 'name':
         setName(value);
         break;
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
       default:
         break;
@@ -34,22 +33,16 @@ export default function Form() {
 
   const handleSubmit = e => {
     e.preventDefault();
-//  console.log(e.target.value);
-// createContacts(e.currentTarget)
- contacts.some(contact => contact.name.includes(name))
-      ? alert(`${name} is already in contacts.`)
-             : createContacts({ name, number });
-      // : dispatch(formSubmithandle({ name, number }));
     reset();
-    // contacts.some(contact => contact.name.includes(name))
-    //   ? alert(`${name} is already in contacts.`)
-    //   : dispatch(formSubmithandle({ name, number }));
-    // reset();
+    contacts.some(contact => contact.name.includes(name))
+      ? alert(`${name} is already in contacts.`)
+      : dispatch(createContacts({ name, phone }));
+    reset();
   };
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -67,14 +60,14 @@ export default function Form() {
       />
       <Input
         labelName="Number"
-        name="number"
+        name="phone"
         type="tel"
-        value={number}
+        value={phone}
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
         required
         onChange={handleChange}
-        id={numberInputId}
+        id={phoneInputId}
       />
       <Button label="Add contact" onSubmit={formSubmithandle} />
     </form>

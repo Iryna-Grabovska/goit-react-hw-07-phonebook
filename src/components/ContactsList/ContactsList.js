@@ -1,14 +1,12 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from 'store/contactsSlice';
+import { useSelector} from 'react-redux';
+import { deleteContact, createContacts } from 'store/contactsSlice';
 import { useFetchContactsQuery , useDeleteContactsMutation} from 'store/contactsApi'
 import s from './ContactsList.module.css';
 
 const ContactsList = () => {
-  const {data=[], isLoading, isFetching}= useFetchContactsQuery();
+  const {data=[], isLoading}= useFetchContactsQuery();
   const [deleteContact, {isLoading : isDeleting}] = useDeleteContactsMutation();
-  //  const dispatch = useDispatch();
-   const contacts = useSelector(state => state.contacts);
   const filterContact = useSelector(state => state.filterContact);
 
   const visibleContacts = () => {
@@ -33,9 +31,7 @@ const ContactsList = () => {
             <button
               className={s.contactListBtn}
               type="button"
-              // onClick={() => dispatch(deleteContact(id))}
                onClick= {()=>handleDeleteContacts(id)}
-              //  isLoading={isDeleting}
             >
            {
           
