@@ -1,12 +1,17 @@
 import React from 'react';
-import { useSelector} from 'react-redux';
-import { deleteContact, createContacts } from 'store/contactsSlice';
-import { useFetchContactsQuery , useDeleteContactsMutation} from 'store/contactsApi'
+import { useSelector } from 'react-redux';
+// import { deleteContact, createContacts } from 'store/contactsSlice';
+import {
+  useFetchContactsQuery,
+  useDeleteContactsMutation,
+} from 'store/contactsApi';
+import { Loading } from 'components/Loader/Loader.js';
 import s from './ContactsList.module.css';
 
 const ContactsList = () => {
-  const {data=[], isLoading}= useFetchContactsQuery();
-  const [deleteContact, {isLoading : isDeleting}] = useDeleteContactsMutation();
+  const { data = [], isLoading } = useFetchContactsQuery();
+  const [deleteContact, { isLoading: isDeleting }] =
+    useDeleteContactsMutation();
   const filterContact = useSelector(state => state.filterContact);
 
   const visibleContacts = () => {
@@ -16,14 +21,14 @@ const ContactsList = () => {
     );
   };
 
-  const handleDeleteContacts = async (id)=> {
+  const handleDeleteContacts = async id => {
     await deleteContact(id).unwrap();
   };
 
- if(isLoading) return <h1>loading...</h1>
+  if (isLoading) return <Loading />;
   return (
     <>
-      <ul>
+      <ul className={s.ContactsList}>
         {visibleContacts().map(({ id, name, phone }) => (
           <li key={id} className={s.contactsListItem}>
             <span> {name}: </span>
@@ -31,13 +36,11 @@ const ContactsList = () => {
             <button
               className={s.contactListBtn}
               type="button"
-               onClick= {()=>handleDeleteContacts(id)}
+              onClick={() => handleDeleteContacts(id)}
+              disabled={isDeleting}
             >
-           {
-          
-        isDeleting ? 'Deleting...' : 'Delete'
-           }   
-             
+              {isDeleting && <Loading />}
+              Delete
             </button>
           </li>
         ))}

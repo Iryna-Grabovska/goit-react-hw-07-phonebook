@@ -1,5 +1,4 @@
 {
-  "homepage": "http://Iryna-Grabovska.github.io/goit-react-hw-07-phonebook",
   "name": "goit-react-hw-07-phonebook",
   "version": "0.1.0",
   "private": true,
@@ -10,7 +9,7 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "netlify deploy -p"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +40,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-loader-spinner": "^4.0.0",
     "react-redux": "^7.2.6",
     "react-scripts": "4.0.3",
     "redux": "^4.1.2",

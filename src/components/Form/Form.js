@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { formSubmithandle } from 'store/contactsSlice';
-import {useCreateContactsMutation} from 'store/contactsApi'
+import { useCreateContactsMutation } from 'store/contactsApi';
 
+import { Loading } from 'components/Loader/Loader.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import shortid from 'shortid';
@@ -15,10 +16,11 @@ export default function Form() {
   const nameInputId = shortid.generate();
   const phoneInputId = shortid.generate();
   const contacts = useSelector(({ contacts }) => contacts);
-  const dispatch = useDispatch();
-  const [createContacts]= useCreateContactsMutation();
+
+  const [createContacts, { isLoading }] = useCreateContactsMutation();
   const handleChange = e => {
     const { name, value } = e.currentTarget;
+    console.log(value);
     switch (name) {
       case 'name':
         setName(value);
@@ -30,14 +32,17 @@ export default function Form() {
         break;
     }
   };
+  // const ({ name, value }) = e.currentTarget;
 
+  if (isLoading) return <Loading />;
+  if (createContacts.length === '') {
+    return;
+  }
   const handleSubmit = e => {
     e.preventDefault();
+    createContacts({ name, phone });
     reset();
-    contacts.some(contact => contact.name.includes(name))
-      ? alert(`${name} is already in contacts.`)
-      : dispatch(createContacts({ name, phone }));
-    reset();
+    console.log(contacts);
   };
 
   const reset = () => {
@@ -69,6 +74,7 @@ export default function Form() {
         onChange={handleChange}
         id={phoneInputId}
       />
+
       <Button label="Add contact" onSubmit={formSubmithandle} />
     </form>
   );
